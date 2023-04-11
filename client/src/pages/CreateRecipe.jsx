@@ -38,9 +38,13 @@ const CreateRecipe = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:3001/recipes", recipe, {
-        headers: { authorization: cookies.access_token },
-      });
+      await axios.post(
+        "https://mern-recipes-app.onrender.com/recipes",
+        recipe,
+        {
+          headers: { authorization: cookies.access_token },
+        }
+      );
       alert("Recipe created");
       navigate("/");
     } catch (error) {

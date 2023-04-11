@@ -23,10 +23,13 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3001/auth/login/", {
-        username,
-        password,
-      });
+      const res = await axios.post(
+        "https://mern-recipes-app.onrender.com/auth/login/",
+        {
+          username,
+          password,
+        }
+      );
       res.data.token && setCookie("access_token", res.data.token);
       window.localStorage.setItem("userID", res.data.userId);
       navigate("/");
@@ -53,7 +56,7 @@ const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3001/auth/register/", {
+      await axios.post("https://mern-recipes-app.onrender.com/auth/register/", {
         username,
         password,
       });
