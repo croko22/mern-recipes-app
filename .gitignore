@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .env
-
+.fuse_hidden*
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

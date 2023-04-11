@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
+import RecipeCard from "../components/RecipeCard";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -56,23 +57,24 @@ const Home = () => {
       <h2>Recipes</h2>
       <ul>
         {recipes.map((recipe) => (
-          <li key={recipe._id}>
-            <div>
-              <h3>{recipe.name}</h3>
-              <p>{recipe.description}</p>
-              <button
-                onClick={() => saveRecipe(recipe._id)}
-                disabled={isRecipeSaved(recipe._id)}
-              >
-                {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
-              </button>
-            </div>
-            <div className="instructions">
-              <p>{recipe.instructions}</p>
-            </div>
-            <img src={recipe.imageUrl} alt={recipe.name} />
-            <p>Cooking time: {recipe.cookingTime} (minutes)</p>
-          </li>
+          // <li key={recipe._id}>
+          //   <div>
+          //     <h3>{recipe.name}</h3>
+          //     <p>{recipe.description}</p>
+          //     <button
+          //       onClick={() => saveRecipe(recipe._id)}
+          //       disabled={isRecipeSaved(recipe._id)}
+          //     >
+          //       {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
+          //     </button>
+          //   </div>
+          //   <div className="instructions">
+          //     <p>{recipe.instructions}</p>
+          //   </div>
+          //   <img src={recipe.imageUrl} alt={recipe.name} />
+          //   <p>Cooking time: {recipe.cookingTime} (minutes)</p>
+          // </li>
+          <RecipeCard recipe={recipe} />
         ))}
       </ul>
     </div>
