@@ -1,76 +1,34 @@
 import React from "react";
-import {
-  Card,
-  Image,
-  Text,
-  ActionIcon,
-  Badge,
-  Group,
-  Center,
-  Avatar,
-  createStyles,
-  rem,
-} from "@mantine/core";
+import { Card, Image, Text, Badge, Group, Button } from "@mantine/core";
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    position: "relative",
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-  },
-
-  rating: {
-    position: "absolute",
-    top: theme.spacing.xs,
-    right: rem(12),
-    pointerEvents: "none",
-  },
-
-  title: {
-    display: "block",
-    marginTop: theme.spacing.md,
-    marginBottom: rem(5),
-  },
-
-  action: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
-    ...theme.fn.hover({
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[1],
-    }),
-  },
-
-  footer: {
-    marginTop: theme.spacing.md,
-  },
-}));
-
-const RecipeCard = ({ recipe }) => {
-  const { classes, cx } = useStyles();
-
+const RecipeCard = ({ recipe, isRecipeSaved, saveRecipe }) => {
   return (
-    <Card
-      shadow="sm"
-      padding="lg"
-      withBorder
-      radius="md"
-      className={cx(classes.card)}
-    >
+    <Card shadow="sm" padding="lg" withBorder radius="md">
       <Card.Section>
         <a href="#">
           <Image src={recipe.imageUrl} height={180} alt="Recipe image" />
         </a>
       </Card.Section>
 
-      <Text className={classes.title} weight={500} component="a">
-        {recipe.name}
-      </Text>
-
+      <Group position="apart" mt="md" mb="xs">
+        <Text weight={500} component="a">
+          {recipe.name}
+        </Text>
+        <Badge color="blue" variant="light">
+          {recipe.cookingTime} (minutes)
+        </Badge>
+      </Group>
+      <Button
+        variant="light"
+        color="gray"
+        top={10}
+        right={10}
+        pos={"absolute"}
+        onClick={() => saveRecipe(recipe._id)}
+        disabled={isRecipeSaved(recipe._id)}
+      >
+        {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
+      </Button>
       <Text>{recipe.description}</Text>
     </Card>
   );

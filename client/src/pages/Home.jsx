@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { Container, Grid, Title } from "@mantine/core";
 import axios from "axios";
-import { useGetUserID } from "../hooks/useGetUserID";
 import RecipeCard from "../components/RecipeCard";
-import { Grid } from "@mantine/core";
+import { useGetUserID } from "../hooks/useGetUserID";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -24,7 +24,7 @@ const Home = () => {
     const getSavedRecipes = async () => {
       try {
         const response = await axios.get(
-          `https://mern-recipes-app.onrender.com/recipes/savedRecipes/ids/${userID}`
+          `${import.meta.env.VITE_API_URL}/recipes/savedRecipes/ids/${userID}`
         );
         setSavedRecipes(response.data.savedRecipes);
       } catch (error) {
@@ -39,7 +39,7 @@ const Home = () => {
   const saveRecipe = async (recipeID) => {
     try {
       const response = await axios.put(
-        "https://mern-recipes-app.onrender.com/recipes",
+        `${import.meta.env.VITE_API_URL}/recipes`,
         {
           recipeID,
           userID,
@@ -54,31 +54,20 @@ const Home = () => {
   const isRecipeSaved = (id) => savedRecipes.includes(id);
 
   return (
-    <div>
-      <h2>Recipes</h2>
-      <Grid>
+    <Container size={{ base: "sm", md: "lg" }} padding="md">
+      <Title>Recipes</Title>
+      <Grid grow>
         {recipes.map((recipe) => (
-          // <li key={recipe._id}>
-          //   <div>
-          //     <h3>{recipe.name}</h3>
-          //     <p>{recipe.description}</p>
-          //     <button
-          //       onClick={() => saveRecipe(recipe._id)}
-          //       disabled={isRecipeSaved(recipe._id)}
-          //     >
-          //       {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
-          //     </button>
-          //   </div>
-          //   <div className="instructions">
-          //     <p>{recipe.instructions}</p>
-          //   </div>
-          //   <img src={recipe.imageUrl} alt={recipe.name} />
-          //   <p>Cooking time: {recipe.cookingTime} (minutes)</p>
-          // </li>
-          <RecipeCard recipe={recipe} />
+          <Grid.Col key={recipe._id} span={4} md={6} lg={4}>
+            <RecipeCard
+              saveRecipe={saveRecipe}
+              isRecipeSaved={isRecipeSaved}
+              recipe={recipe}
+            />
+          </Grid.Col>
         ))}
       </Grid>
-    </div>
+    </Container>
   );
 };
 
