@@ -54,20 +54,24 @@ const RecipeCard = ({ recipe }) => {
   const { classes, cx } = useStyles();
 
   return (
-    <Card withBorder radius="md" className={cx(classes.card)}>
+    <Card
+      shadow="sm"
+      padding="lg"
+      withBorder
+      radius="md"
+      className={cx(classes.card)}
+    >
       <Card.Section>
         <a href="#">
-          <Image src={recipe.imageUrl} height={180} />
+          <Image src={recipe.imageUrl} height={180} alt="Recipe image" />
         </a>
       </Card.Section>
 
-      <Text className={classes.title} fw={500} component="a">
+      <Text className={classes.title} weight={500} component="a">
         {recipe.name}
       </Text>
 
-      <Text fz="sm" color="dimmed" lineClamp={4}>
-        {recipe.description}
-      </Text>
+      <Text>{recipe.description}</Text>
     </Card>
   );
 };

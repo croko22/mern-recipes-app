@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import RecipeCard from "../components/RecipeCard";
+import { Grid } from "@mantine/core";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -55,7 +56,7 @@ const Home = () => {
   return (
     <div>
       <h2>Recipes</h2>
-      <ul>
+      <Grid>
         {recipes.map((recipe) => (
           // <li key={recipe._id}>
           //   <div>
@@ -76,7 +77,7 @@ const Home = () => {
           // </li>
           <RecipeCard recipe={recipe} />
         ))}
-      </ul>
+      </Grid>
     </div>
   );
 };
