@@ -61,9 +61,14 @@ const Navbar = () => {
   return (
     <Header height={60}>
       <Container className={classes.header}>
-        <Link className={cx(classes.link)} to="/">
-          <h1>Slow Food Recipes App</h1>
-        </Link>
+        <Group>
+          <img src="vite.svg" alt="Vite logo" height={40} />
+
+          <Link className={cx(classes.link)} to="/">
+            <h1>Slow Food Recipes App</h1>
+          </Link>
+        </Group>
+
         <Group spacing={5} className={classes.links}>
           <Link className={cx(classes.link)} to="/">
             Home
