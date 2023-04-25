@@ -10,7 +10,7 @@ const SavedRecipes = () => {
     const getSavedRecipes = async () => {
       try {
         const response = await axios.get(
-          `https://mern-recipes-app.onrender.com/recipes/savedRecipes/${userID}`
+          `${import.meta.env.VITE_API_URL}/recipes/savedRecipes/${userID}`
         );
         setSavedRecipes(response.data.savedRecipes);
       } catch (error) {
