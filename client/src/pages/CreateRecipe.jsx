@@ -1,46 +1,46 @@
-import { useState } from "react";
-import axios from "axios";
-import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useForm } from "@mantine/form";
+import {
+  TextInput,
+  NumberInput,
+  Container,
+  Button,
+  Group,
+  Textarea,
+  Text,
+  Title,
+  Flex,
+} from "@mantine/core";
+import axios from "axios";
+import { useGetUserID } from "../hooks/useGetUserID";
 
 const CreateRecipe = () => {
   const userID = useGetUserID();
   const [cookies, _] = useCookies(["access_token"]);
-  const [recipe, setRecipe] = useState({
-    name: "",
-    description: "",
-    ingredients: [],
-    instructions: "",
-    imageUrl: "",
-    cookingTime: 0,
-    userOwner: userID,
+  const recipe = useForm({
+    initialValues: {
+      name: "",
+      description: "",
+      ingredients: [""],
+      instructions: "",
+      imageUrl: "",
+      cookingTime: 0,
+      userOwner: userID,
+    },
   });
 
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setRecipe({ ...recipe, [name]: value });
-  };
-  const handleIngredientChange = (event, index) => {
-    const { value } = event.target;
-    const ingredients = [...recipe.ingredients];
-    ingredients[index] = value;
-    setRecipe({ ...recipe, ingredients });
-  };
-
   const handleAddIngredient = () => {
-    const ingredients = [...recipe.ingredients, ""];
-    setRecipe({ ...recipe, ingredients });
+    recipe.insertListItem("ingredients", "");
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async () => {
     try {
       await axios.post(
-        "https://mern-recipes-app.onrender.com/recipes",
-        recipe,
+        `${import.meta.env.VITE_API_URL}/recipes`,
+        recipe.values,
         {
           headers: { authorization: cookies.access_token },
         }
@@ -53,63 +53,77 @@ const CreateRecipe = () => {
   };
 
   return (
-    <div className="create-recipe">
-      <h2>Create Recipe</h2>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={recipe.name}
-          onChange={handleChange}
+    <Container>
+      <Title>Create Recipe</Title>
+      <form onSubmit={recipe.onSubmit(onSubmit)}>
+        <TextInput
+          label="Name"
+          placeholder="Name"
+          {...recipe.getInputProps("name")}
         />
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          value={recipe.description}
-          onChange={handleChange}
-        ></textarea>
-        <label htmlFor="ingredients">Ingredients</label>
-        {recipe.ingredients.map((ingredient, index) => (
-          <input
-            key={index}
-            type="text"
-            name="ingredients"
-            value={ingredient}
-            onChange={(event) => handleIngredientChange(event, index)}
-          />
-        ))}
-        <button type="button" onClick={handleAddIngredient}>
-          Add Ingredient
-        </button>
-        <label htmlFor="instructions">Instructions</label>
-        <textarea
-          id="instructions"
-          name="instructions"
-          value={recipe.instructions}
-          onChange={handleChange}
-        ></textarea>
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          type="text"
-          id="imageUrl"
-          name="imageUrl"
-          value={recipe.imageUrl}
-          onChange={handleChange}
+        <Textarea
+          label="Description"
+          placeholder="Describe your recipe here"
+          {...recipe.getInputProps("description")}
         />
-        <label htmlFor="cookingTime">Cooking Time (minutes)</label>
-        <input
-          type="number"
-          id="cookingTime"
-          name="cookingTime"
-          value={recipe.cookingTime}
-          onChange={handleChange}
+        <Text>Ingredients</Text>
+        <Flex
+          justify="flex-start"
+          align="flex-start"
+          direction="column"
+          wrap="wrap"
+          gap="md"
+        >
+          <Flex
+            justify="flex-start"
+            align="flex-start"
+            direction="column"
+            wrap="wrap"
+            gap="md"
+          >
+            {recipe.values.ingredients.map((_, index) => (
+              <Group key={index}>
+                <TextInput
+                  placeholder="Ingredient"
+                  {...recipe.getInputProps(`ingredients.${index}`)}
+                  rightSection={
+                    // TODO: Improve the styling of this button
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        recipe.removeListItem("ingredients", index);
+                      }}
+                    >
+                      X
+                    </button>
+                  }
+                />
+              </Group>
+            ))}
+          </Flex>
+          <Button color="gray" onClick={handleAddIngredient}>
+            + Add Ingredient 🍕 🍔 🍟
+          </Button>
+        </Flex>
+        <Textarea
+          label="Instructions"
+          placeholder="Write the instructions here"
+          {...recipe.getInputProps("instructions")}
         />
-        <button type="submit">Create Recipe</button>
+        <TextInput
+          placeholder="Image URL"
+          label="Image URL"
+          {...recipe.getInputProps("imageUrl")}
+        />
+        <NumberInput
+          defaultValue={30}
+          label="Cooking Time (minutes)"
+          placeholder="Cooking Time"
+          {...recipe.getInputProps("cookingTime")}
+        />
+        <Button type="submit">Create Recipe</Button>
       </form>
-    </div>
+    </Container>
   );
 };
 
