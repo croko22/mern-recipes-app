@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Input, Container, Button, Flex, Group } from "@mantine/core";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   return (
-    <div className="auth">
-      <Login />
-      <Register />
-    </div>
+    <Container size="sm" py="xl">
+      <Group position="apart">
+        <Login />
+        <Register />
+      </Group>
+    </Container>
   );
 };
 
@@ -24,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://mern-recipes-app.onrender.com/auth/login/",
+        `${import.meta.env.VITE_API_URL}/auth/login/`,
         {
           username,
           password,
@@ -56,7 +59,7 @@ const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://mern-recipes-app.onrender.com/auth/register/", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/auth/register/`, {
         username,
         password,
       });
@@ -92,7 +95,7 @@ const Form = ({
         <h2>{label}</h2>
         <div className="form-group">
           <label htmlFor="username">Username</label>
-          <input
+          <Input
             type="text"
             id="username"
             value={username}
@@ -101,14 +104,14 @@ const Form = ({
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
+          <Input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">{label}</button>
+        <Button type="submit">{label}</Button>
       </form>
     </div>
   );
