@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Image, Text, Badge, Group, Button } from "@mantine/core";
 
-const RecipeCard = ({ recipe, isRecipeSaved, saveRecipe }) => {
+const RecipeCard = ({ recipe, isRecipeSaved = () => false, saveRecipe }) => {
   return (
     <Card shadow="sm" padding="lg" withBorder radius="md">
       <Card.Section>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Container, Grid, Title } from "@mantine/core";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
+import RecipeCard from "../components/RecipeCard";
 
 const SavedRecipes = () => {
   const [savedRecipes, setSavedRecipes] = useState([]);
@@ -24,21 +26,13 @@ const SavedRecipes = () => {
   return (
     <div>
       <h2>Saved Recipes</h2>
-      <ul>
+      <Grid grow>
         {savedRecipes.map((recipe) => (
-          <li key={recipe._id}>
-            <div>
-              <h3>{recipe.name}</h3>
-              <p>{recipe.description}</p>
-            </div>
-            <div className="instructions">
-              <p>{recipe.instructions}</p>
-            </div>
-            <img src={recipe.imageUrl} alt={recipe.name} />
-            <p>Cooking time: {recipe.cookingTime} (minutes)</p>
-          </li>
+          <Grid.Col key={recipe._id} span={4} md={6} lg={4}>
+            <RecipeCard recipe={recipe} />
+          </Grid.Col>
         ))}
-      </ul>
+      </Grid>
     </div>
   );
 };
